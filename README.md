@@ -1,13 +1,10 @@
-# Sample Hardhat Project
+# fantasyTeams
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
+Dependencies installed:
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.js
+npm install @openzeppelin/contracts
+npm i ethers
+npm install dotenv
+npm i -D @nomiclabs/hardhat-etherscan
 ```
