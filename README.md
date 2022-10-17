@@ -3,6 +3,7 @@
 Dependencies installed:
 
 ```shell
+npm hardhat install
 npm install @openzeppelin/contracts
 npm i ethers
 npm install dotenv
