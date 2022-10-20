@@ -17,9 +17,27 @@ async function main() {
   );
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
 });
+
+
+// LEAVE THIS COMMENTED OUT FOR NOW - WE WILL NEED IT LATER
+
+// const hre = require("hardhat");
+
+// async function main() {
+
+//   const OakToken = await hre.ethers.getContractFactory("OakToken"); // the class
+//   const oakTokenDeployed = await OakToken.deploy("OakTokenName", "OAK"); // paste in constructor arguments
+//   await oakTokenDeployed.deployed();
+
+//   console.log("Deployed OneOfAKind to:", oakTokenDeployed.address);
+
+// }
+
+// main().catch((error) => {
+//   console.error(error);
+//   process.exitCode = 1;
+// });
