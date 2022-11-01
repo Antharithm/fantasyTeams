@@ -11,13 +11,13 @@ class StatsHandler:
             self.__api_key = file.readline()
         self.__headers = {'Ocp-Apim-Subscription-Key' : self.__api_key}
         self.__player_game_stats_path = 'PlayerGameStatsByWeek'
-        
+
     def get_player_stats_by_week(self, season: int, week: int, fields: list=None, players: list=None, output_path: str=None):
         try:
             endpoint = urljoin(self.__base_api_url, f'{self.__player_game_stats_path}/{season}/{week}')
             response = requests.get(endpoint, headers=self.__headers)
             data = json.loads(response.content.decode())
-            
+
             df = pd.json_normalize(data)
             if players:
                 if all(isinstance(player, int) for player in players):
@@ -37,7 +37,7 @@ class StatsHandler:
 
         except Exception as error:
             raise error
-    
+
     def get_players(self, season: int, week: int, fields: list=None, players: list=None, output_path: str=None):
         if fields is None:
             fields = ['PlayerID', 'ShortName', 'Position']
@@ -45,7 +45,7 @@ class StatsHandler:
                                                 players=players, output_path=output_path)
         return players
 
-        
+
     def get_player_stats_by_season(self, season: int, fields: list=None, players: list=None, output_path: str=None):
         try:
             df = None
@@ -57,10 +57,10 @@ class StatsHandler:
                     df = pd.DataFrame.from_dict(data)
                 else:
                     df = pd.concat([df, pd.DataFrame.from_dict(data)])
-            
+
             df = df.sort_values(by=['PlayerID', 'GameKey'])
             data = df.to_dict(orient='records')
-            
+
             if output_path:
                 with open(output_path, 'w') as file:
                     file.write(json.dumps(data, indent=4))
@@ -73,10 +73,10 @@ class StatsHandler:
 
 if __name__ == "__main__":
     handler = StatsHandler()
-    # stats = handler.get_player_stats_by_week(season=2022, week=1, fields=[
-    #         'GameKey', 'PlayerID', 'FantasyPointsPPR'], output_path='../data/PlayerStatsByWeek.json')
-    players = handler.get_players(season=2022, week=1, fields=['PlayerID', 'ShortName', 'Position', 'Team'],
-                                    output_path='../data/Players.json')
+    stats = handler.get_player_stats_by_week(season=2022, week=1, fields=[
+            'Week', 'PlayerID', 'FantasyPointsPPR'], output_path='../data/PlayerStatsByWeek.json')
+    # players = handler.get_players(season=2022, week=1, fields=['PlayerID', 'ShortName', 'Position', 'Team'],
+    #                                 output_path='../data/Players.json')
     # season_stats = handler.get_player_stats_by_season(season=2021, fields=['GameKey', 'PlayerID', 'FantasyPointsPPR'],
     #                                                     players=["Aaron Rodgers", "Cooper Kupp"],
     #                                                     output_path='../data/2021_season_stats.json')
