@@ -15,6 +15,7 @@ export function Balance(props) {
 
   return (
     <Container>
+      <h3>Balance</h3>
       <Row>
         <Col>
           <InputGroup>
