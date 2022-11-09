@@ -48,7 +48,7 @@ export function Dapp(props) {
     <div>
       <h1>Dapp</h1>
       <hr />
-      <Balance tkn={tkn} account={account} />
+      <Balance account={account} tkn={tkn} />
       <hr />
       <Collection account={account} nft={nft} />
       <hr />
