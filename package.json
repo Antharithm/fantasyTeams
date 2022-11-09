@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npx hardhat test",
-    "sim": "npx hardhat node"
+    "sim": "npx hardhat node",
+    "deploy": "npx hardhat run ./scripts/deploy.js"
   },
   "repository": {
     "type": "git",
