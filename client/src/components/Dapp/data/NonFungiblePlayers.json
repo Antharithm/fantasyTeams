@@ -379,6 +379,25 @@
     {
       "inputs": [
         {
+          "internalType": "uint256[]",
+          "name": "ids",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "tokenURIs",
+      "outputs": [
+        {
+          "internalType": "string[]",
+          "name": "uris",
+          "type": "string[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
           "internalType": "address",
           "name": "from",
           "type": "address"
@@ -400,5 +419,5 @@
       "type": "function"
     }
   ],
-  "address": "0x0B57654E0d885E8373453239C31e4242CBC30f68"
+  "address": "0xAA09e50749E4D9a50704d02c45F6a87b6c006733"
 }

@@ -46,4 +46,17 @@ contract NonFungiblePlayers is ERC721URIStorage, INonFungiblePlayers {
     function myTokens() public view override returns (uint[] memory ids) {
         return ownedBy(msg.sender);
     }
+
+    function tokenURIs(uint[] memory ids)
+        public
+        view
+        override
+        returns (string[] memory uris)
+    {
+        string[] memory result = new string[](ids.length);
+        for (uint i = 0; i < ids.length; i++) {
+            result[i] = tokenURI(ids[i]);
+        }
+        uris = result;
+    }
 }

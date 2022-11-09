@@ -8,5 +8,10 @@ interface INonFungiblePlayers {
 
     function myTokens() external view returns (uint[] memory ids);
 
+    function tokenURIs(uint[] memory)
+        external
+        view
+        returns (string[] memory uris);
+
     function mint(string memory uri) external returns (uint id);
 }

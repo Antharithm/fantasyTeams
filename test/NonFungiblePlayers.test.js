@@ -42,6 +42,12 @@ describe('NonFungiblePlayers', function () {
           uintArray(await contract.connect(signer).myTokens()),
           expected[signers.indexOf(signer)]
         );
+        assert.deepEqual(
+          await contract.tokenURIs(
+            uintArray(await contract.connect(signer).myTokens())
+          ),
+          [expectedUri]
+        );
       }
 
       let current = signers.length + 1;

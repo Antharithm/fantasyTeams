@@ -1,14 +1,7 @@
 const hre = require('hardhat');
 const fs = require('fs');
 
-async function deploy(name) {
-  const cache = './client/src/components/Dapp/data';
-  const pathTo = `${cache}/${name}.json`;
-  if (!fs.existsSync(cache)) fs.mkdirSync(cache);
-  else if (fs.existsSync(pathTo)) {
-    throw new Error('already deployed');
-  }
-
+async function deploy(name, pathTo) {
   const contract = await (await hre.ethers.getContractFactory(name)).deploy();
   await contract.deployTransaction.wait();
 
@@ -47,7 +40,13 @@ async function verify(tx, options) {
 }
 
 async function deployAndVerify(name) {
-  const contract = await deploy(name);
+  const cache = './client/src/components/Dapp/data';
+  if (!fs.existsSync(cache)) fs.mkdirSync(cache);
+
+  const pathTo = `${cache}/${name}.json`;
+  if (fs.existsSync(pathTo)) return;
+
+  const contract = await deploy(name, pathTo);
   await verify(contract.deployTransaction, { address: contract.address });
 }
 
