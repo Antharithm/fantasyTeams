@@ -7,16 +7,17 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./IFantasyPoints.sol";
 
 contract FantasyPoints is ERC20, AccessControl, IFantasyPoints {
-    constructor() ERC20("Fantasy Points", "FP") {
-        _grantRole(admin, msg.sender);
-    }
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    bytes32 public constant admin = keccak256("DEFAULT_ADMIN_ROLE");
+    constructor() ERC20("Fantasy Points", "FP") {
+        _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
+        _grantRole(MINTER_ROLE, msg.sender);
+    }
 
     function mint(address user, uint amount)
         public
         override
-        onlyRole(admin)
+        onlyRole(MINTER_ROLE)
         returns (uint balance)
     {
         _mint(user, amount);
@@ -27,7 +28,7 @@ contract FantasyPoints is ERC20, AccessControl, IFantasyPoints {
     function burn(address user, uint amount)
         public
         override
-        onlyRole(admin)
+        onlyRole(MINTER_ROLE)
         returns (uint balance)
     {
         _burn(user, amount);

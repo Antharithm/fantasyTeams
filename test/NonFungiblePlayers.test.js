@@ -3,7 +3,7 @@ const { expect, assert } = require('chai');
 const uint = (num) => parseInt(num.toString());
 const uintArray = (nums) => nums.map((num) => uint(num));
 
-describe('NonFungiblePlayers', function () {
+xdescribe('NonFungiblePlayers', function () {
   const expectedUri = 'expected uri';
   let contract, signers;
 
@@ -58,6 +58,22 @@ describe('NonFungiblePlayers', function () {
           expected[signers.indexOf(signer)]
         );
       }
+
+      for (let i = 0; i < 10; i++) {
+        await (await contract.connect(signers[0]).mint(expectedUri)).wait();
+        expected[0].push(current);
+        current++;
+      }
+
+      assert.deepEqual(
+        uintArray(await contract.ownedBy(signers[0].address)),
+        expected[0]
+      );
+
+      assert.deepEqual(
+        uintArray(await contract.connect(signers[0]).myTokens()),
+        expected[0]
+      );
     });
   });
 });

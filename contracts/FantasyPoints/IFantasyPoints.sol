@@ -5,7 +5,7 @@ interface IFantasyPoints {
     event Minted(address user, uint amount);
     event Burned(address user, uint amount);
 
-    function admin() external view returns (bytes32);
+    function MINTER_ROLE() external view returns (bytes32);
 
     function mint(address user, uint amount) external returns (uint balance);
 
