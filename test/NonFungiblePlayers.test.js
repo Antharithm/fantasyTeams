@@ -3,7 +3,7 @@ const { expect, assert } = require('chai');
 const uint = (num) => parseInt(num.toString());
 const uintArray = (nums) => nums.map((num) => uint(num));
 
-xdescribe('NonFungiblePlayers', function () {
+describe('NonFungiblePlayers', function () {
   const expectedUri = 'expected uri';
   let contract, signers;
 
