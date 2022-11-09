@@ -1,33 +1,47 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { useSigner } from 'wagmi';
+import { useSigner, useContract } from 'wagmi';
+import { Collection } from './Collection';
+import { Minter } from './Minter';
 
 export function Dapp(props) {
-  const { data: signer, isError, isLoading } = useSigner();
+  const { account } = props;
+
+  const { data: signerOrProvider, isError, isLoading } = useSigner();
+  const { abi, address } = require('./data/NonFungiblePlayers.json');
+  const nft = useContract({
+    signerOrProvider,
+    abi,
+    address,
+  });
+
+  if (isError || isLoading)
+    return (
+      <Container>
+        <h1>Dapp</h1>
+        {isLoading && (
+          <Row>
+            <Col>
+              <p>Loading...</p>
+            </Col>
+          </Row>
+        )}
+        {isError && (
+          <Row>
+            <Col>
+              <p>Error fetching signer...</p>
+            </Col>
+          </Row>
+        )}
+      </Container>
+    );
 
   return (
-    <Container>
+    <div>
       <h1>Dapp</h1>
-      {isLoading && (
-        <Row>
-          <Col>
-            <p>Loading...</p>
-          </Col>
-        </Row>
-      )}
-      {isError && (
-        <Row>
-          <Col>
-            <p>Error fetching signer...</p>
-          </Col>
-        </Row>
-      )}
-      {!isError && !isLoading && signer && (
-        <Row>
-          <Col>
-            <p>My account!</p>
-          </Col>
-        </Row>
-      )}
-    </Container>
+      <hr />
+      <Collection account={account} nft={nft} />
+      <hr />
+      <Minter account={account} nft={nft} />
+    </div>
   );
 }
