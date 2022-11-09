@@ -1,5 +1,6 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { useSigner, useContract } from 'wagmi';
+import { Balance } from './Balance';
 import { Collection } from './Collection';
 import { Minter } from './Minter';
 
@@ -7,11 +8,19 @@ export function Dapp(props) {
   const { account } = props;
 
   const { data: signerOrProvider, isError, isLoading } = useSigner();
-  const { abi, address } = require('./data/NonFungiblePlayers.json');
+
+  const NonFungiblePlayers = require('./data/NonFungiblePlayers.json');
   const nft = useContract({
     signerOrProvider,
-    abi,
-    address,
+    abi: NonFungiblePlayers.abi,
+    address: NonFungiblePlayers.address,
+  });
+
+  const FantasyPoints = require('./data/FantasyPoints.json');
+  const tkn = useContract({
+    signerOrProvider,
+    abi: FantasyPoints.abi,
+    address: FantasyPoints.address,
   });
 
   if (isError || isLoading)
@@ -38,6 +47,8 @@ export function Dapp(props) {
   return (
     <div>
       <h1>Dapp</h1>
+      <hr />
+      <Balance tkn={tkn} account={account} />
       <hr />
       <Collection account={account} nft={nft} />
       <hr />
