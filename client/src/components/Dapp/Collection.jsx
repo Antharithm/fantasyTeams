@@ -2,31 +2,35 @@ import { useState } from 'react';
 import { Row, Col, Card, Container, ListGroup } from 'react-bootstrap';
 
 export function Collectible(props) {
-  const { id, uri } = props;
-  const title = `NAME`;
+  const { data } = props;
+  const { id, name, image, description, attributes } = data;
+
   return (
     <Card as={Col} style={{ width: '18rem' }} text="black">
-      <Card.Header>#{id}</Card.Header>
-      <Card.Img variant="top" />
+      <Card.Header>
+        <small>#{id}</small>
+      </Card.Header>
+      <Card.Img variant="top" src={image} />
       <Card.Body>
-        <Card.Title>{title}</Card.Title>
+        <Card.Title>{name}</Card.Title>
+        <Card.Text>{description}</Card.Text>
         <ListGroup>
-          <ListGroup.Item>ID: {id}</ListGroup.Item>
+          {Object.keys(attributes)
+            .filter((k) => k !== 'authors')
+            .map((k) => (
+              <ListGroup.Item key={`${k}-${id}`}>
+                {k}: {attributes[k]}
+              </ListGroup.Item>
+            ))}
         </ListGroup>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </Card.Text>
       </Card.Body>
-      <Card.Footer>
-        <small>{uri}</small>
-      </Card.Footer>
+      <Card.Footer></Card.Footer>
     </Card>
   );
 }
 
 export function Collection(props) {
-  const { nft, refresh, setRefresh } = props;
+  const { nft, refresh, setRefresh, playerData } = props;
 
   const [collection, setCollection] = useState(undefined);
   if (collection === undefined || refresh)
@@ -36,7 +40,14 @@ export function Collection(props) {
         let together = [];
         const ids = res.map((entry) => parseInt(entry.toString()));
         const uris = await nft.tokenURIs(ids);
-        ids.forEach((id) => together.push({ id, uri: uris[ids.indexOf(id)] }));
+        ids.forEach((id) => {
+          let data;
+          const cid = uris[ids.indexOf(id)];
+          playerData.forEach((player) => {
+            if (player.cid === cid) data = player;
+          });
+          together.push({ id, cid, ...data });
+        });
         setCollection(together);
         if (refresh) setRefresh(false);
       })
@@ -51,9 +62,7 @@ export function Collection(props) {
       <h3>Collection</h3>
       <Row>
         {collection &&
-          collection.map((item) => (
-            <Collectible key={item.id} id={item.id} uri={item.uri} />
-          ))}
+          collection.map((data) => <Collectible key={data.id} data={data} />)}
       </Row>
     </Container>
   );
