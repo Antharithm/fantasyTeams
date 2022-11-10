@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { useSigner, useContract } from 'wagmi';
 import { Balance } from './Balance';
@@ -6,6 +7,7 @@ import { Minter } from './Minter';
 
 export function Dapp(props) {
   const { account } = props;
+  const [refresh, setRefresh] = useState(false);
 
   const { data: signerOrProvider, isError, isLoading } = useSigner();
 
@@ -50,9 +52,19 @@ export function Dapp(props) {
       <hr />
       <Balance account={account} tkn={tkn} />
       <hr />
-      <Collection account={account} nft={nft} />
+      <Minter
+        account={account}
+        nft={nft}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
       <hr />
-      <Minter account={account} nft={nft} />
+      <Collection
+        account={account}
+        nft={nft}
+        refresh={refresh}
+        setRefresh={setRefresh}
+      />
     </div>
   );
 }
