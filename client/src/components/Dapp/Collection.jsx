@@ -57,13 +57,24 @@ export function Collection(props) {
         if (refresh) setRefresh(false);
       });
 
+  let chunks = [];
+  if (collection) {
+    let collectibles = collection.map((data) => (
+      <Collectible key={data.id} data={data} />
+    ));
+    const chunkSize = 5;
+    for (let i = 0; i < collectibles.length; i += chunkSize) {
+      const chunk = collectibles.slice(i, i + chunkSize);
+      chunks.push(<Row key={`chunk-${i}`}>{chunk}</Row>);
+    }
+  }
+
   return (
     <Container>
       <h3>Collection</h3>
-      <Row>
-        {collection &&
-          collection.map((data) => <Collectible key={data.id} data={data} />)}
-      </Row>
+      {chunks.map((chunk) => (
+        <div key={`chunk-div-${chunks.indexOf(chunk)}`}>{chunk}</div>
+      ))}
     </Container>
   );
 }
