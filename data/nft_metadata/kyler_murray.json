@@ -1,0 +1,14 @@
+  {
+    "name": "Kyler Murray",
+    "description": "Quarterback for the Arizona Cardinals",
+    "image": "https://ipfs.io/ipfs/bafybeiea6dphyzb7d22boievkexuefxecymdgmclnnv35sdhsjihnqkwei?filename=20889_kyler_murray.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "20889",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

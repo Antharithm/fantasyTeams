@@ -1,0 +1,14 @@
+  {
+    "name": "Justin Herbert",
+    "description": "Quarterback for the Los Angeles Chargers",
+    "image": "https://ipfs.io/ipfs/bafkreihslkk6jnuip3heb5tbqerbjxkh435wfohfh26y6g54i27wvdmv4i?filename=21681_justin_herbert.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "21681",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

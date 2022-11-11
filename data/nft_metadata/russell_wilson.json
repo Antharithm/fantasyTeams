@@ -1,0 +1,14 @@
+  {
+    "name": "Russell Wilson",
+    "description": "Quarterback for the Denver Broncos",
+    "image": "https://ipfs.io/ipfs/bafybeihude7z57i6abtmoaof2tuvlg7krbopxee3ydeqyrfcw3g7ejwbwy?filename=14536_russell_wilson.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "14536",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

@@ -1,0 +1,14 @@
+  {
+    "name": "Lamar Jackson",
+    "description": "Quarterback for the Baltimore Ravens",
+    "image": "https://ipfs.io/ipfs/bafkreibnbgklsakwxyyqdq62hxkqcidi6fmi4hwwkw5h7grgtrqm3tqude?filename=19781_lamar_jackson.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "19781",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

@@ -1,0 +1,14 @@
+  {
+    "name": "Joe Burrow",
+    "description": "Quarterback for the Cincinnati Bengals",
+    "image": "https://ipfs.io/ipfs/bafybeifbnz5wfhe5onlmefhucxyxz3ref4kxkab3fxfqrzs3m2ztvp3hlq?filename=21693_joe_burrow.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "21693",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

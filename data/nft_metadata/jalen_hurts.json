@@ -1,0 +1,14 @@
+  {
+    "name": "Jalen Hurts",
+    "description": "Quarterback for Philadelphia Eagles. He's a 5 star man",
+    "image": "https://ipfs.io/ipfs/bafkreifl62gtvt6pbdlurvlgim5jppnlv3czjnbttbgxs3obxj6qjlky2y?filename=21831_jalen_hurts.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "21831",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

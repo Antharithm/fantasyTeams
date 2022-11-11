@@ -1,0 +1,14 @@
+  {
+    "name": "Patrick Mahomes",
+    "description": "Quarterback for the Kansas City Cheifs",
+    "image": "https://ipfs.io/ipfs/bafkreiemfqzeuxicp3jza6rrrjxdu6bxllkv47c5dzh5ll6xnlqldwgkgi?filename=18890_patrick_mahomes.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "18890",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

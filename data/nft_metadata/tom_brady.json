@@ -1,0 +1,14 @@
+  {
+    "name": "Tom Brady",
+    "description": "Quarterback for the Tampa Bay Buccaneers",
+    "image": "https://ipfs.io/ipfs/bafkreibs6brnx4uk3oqdyrzzelbeoxb4iezxcpwo6zmpgqnoehw3xepxjm?filename=4314_tom_brady.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "4314",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

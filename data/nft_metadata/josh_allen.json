@@ -1,0 +1,14 @@
+  {
+    "name": "Josh Allen",
+    "description": "Quarterback for the Buffalo Bills",
+    "image": "https://ipfs.io/ipfs/bafkreigsl6p7age4axzadtege4uooryazz5iy3pvf7gwa2yfs3s2zqz7bi?filename=19801_josh_allen.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "19801",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }

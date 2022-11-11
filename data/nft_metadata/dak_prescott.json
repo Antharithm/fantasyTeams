@@ -1,0 +1,14 @@
+  {
+    "name": "Dak Prescott",
+    "description": "Quarterback for the Dallas Cowboys",
+    "image": "https://ipfs.io/ipfs/bafkreiaj6rcmrgcxberj5qrvlg2gb74qabbz45lp4k4iubwvlbs7gc7ik4?filename=18055_dak_prescott.png",
+    "properties": {
+      "Position": "QB",
+      "PlayerID": "18055",
+      "authors": [
+        {
+          "name": "dov"
+        }
+      ],
+    }
+  }
