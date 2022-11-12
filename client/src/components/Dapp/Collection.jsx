@@ -6,7 +6,17 @@ export function Collectible(props) {
   const { id, name, image, description, attributes } = data;
 
   return (
-    <Card as={Col} style={{ width: '18rem' }} text="black">
+    <Card
+      as={Col}
+      style={{ width: '18rem' }}
+      text="black"
+      xs={12}
+      sm={6}
+      md={4}
+      lg={3}
+      xl={2}
+      xxl={1}
+    >
       <Card.Header>
         <small>#{id}</small>
       </Card.Header>
@@ -57,24 +67,15 @@ export function Collection(props) {
         if (refresh) setRefresh(false);
       });
 
-  let chunks = [];
-  if (collection) {
-    let collectibles = collection.map((data) => (
-      <Collectible key={data.id} data={data} />
-    ));
-    const chunkSize = 5;
-    for (let i = 0; i < collectibles.length; i += chunkSize) {
-      const chunk = collectibles.slice(i, i + chunkSize);
-      chunks.push(<Row key={`chunk-${i}`}>{chunk}</Row>);
-    }
-  }
+  console.log(collection);
 
   return (
-    <Container>
+    <Container fluid>
       <h3>Collection</h3>
-      {chunks.map((chunk) => (
-        <div key={`chunk-div-${chunks.indexOf(chunk)}`}>{chunk}</div>
-      ))}
+      <Row>
+        {collection &&
+          collection.map((data) => <Collectible key={data.id} data={data} />)}
+      </Row>
     </Container>
   );
 }
