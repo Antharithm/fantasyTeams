@@ -68,7 +68,7 @@ contract FantasyFootball is IFantasyFootball, Ownable, ERC721 {
         return (totalSupply - 1);
     }
 
-    function stake(uint[] memory ids, uint amount) public {
+    function stake(uint[] memory ids, uint amount) public override {
         require(collateral[msg.sender] == 0, "FantasyFootball: staked");
         for (uint i = 0; i < ids.length; i++)
             require(playerEligible[ids[i]], "FantasyFootball: !eligiblePlayer");
@@ -86,7 +86,7 @@ contract FantasyFootball is IFantasyFootball, Ownable, ERC721 {
         emit NftStake(ids, "Points Deposited", amount);
     }
 
-    function unstake() public {
+    function unstake() public override {
         require(collateral[msg.sender] != 0, "FantasyFootball: !staked");
 
         uint[] memory ids = team[msg.sender];
