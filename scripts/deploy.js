@@ -1,24 +1,6 @@
 const hre = require('hardhat');
 const fs = require('fs');
 
-async function deploy(name, pathTo) {
-  const contract = await (await hre.ethers.getContractFactory(name)).deploy();
-  await contract.deployTransaction.wait();
-
-  fs.writeFileSync(
-    pathTo,
-    JSON.stringify(
-      {
-        abi: hre.artifacts.readArtifactSync(name).abi,
-        address: contract.address,
-      },
-      null,
-      2
-    )
-  );
-  return contract;
-}
-
 async function verify(tx, options) {
   await tx.wait();
   await new Promise((resolve) => setTimeout(resolve, 15000));
@@ -39,20 +21,43 @@ async function verify(tx, options) {
   }
 }
 
-async function deployAndVerify(name) {
-  const cache = './client/src/components/Dapp/data';
+async function deployAndVerify(name, args = []) {
+  const cache = './client/src/components/Dapp/data/' + hre.network.name;
   if (!fs.existsSync(cache)) fs.mkdirSync(cache);
 
-  const pathTo = `${cache}/${name}.json`;
-  if (fs.existsSync(pathTo)) return;
+  const contract = await (
+    await hre.ethers.getContractFactory(name)
+  ).deploy(...args);
+  await contract.deployTransaction.wait();
+  fs.writeFileSync(
+    `${cache}/${name}.json`,
+    JSON.stringify(
+      {
+        abi: hre.artifacts.readArtifactSync(name).abi,
+        address: contract.address,
+      },
+      null,
+      2
+    )
+  );
 
-  const contract = await deploy(name, pathTo);
-  await verify(contract.deployTransaction, { address: contract.address });
+  if (!['hardhat', 'localhost'].includes(hre.network.name))
+    await verify(contract.deployTransaction, {
+      address: contract.address,
+      constructorArguments: args,
+    });
+
+  console.log('DEPLOYED:', name, contract.address);
+  return contract;
 }
 
 async function main() {
-  await deployAndVerify('NonFungiblePlayers');
-  await deployAndVerify('FantasyPoints');
+  console.log();
+  const nft = await deployAndVerify('NonFungiblePlayers');
+  const tkn = await deployAndVerify('FantasyPoints');
+  await deployAndVerify('fantasy', [nft.address, tkn.address]);
+  // await deployAndVerify('TruflationTester', [oracleId_, jobId_, fee_]);
+  console.log();
 }
 
 main().catch((error) => {

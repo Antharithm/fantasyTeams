@@ -67,8 +67,6 @@ export function Collection(props) {
         if (refresh) setRefresh(false);
       });
 
-  console.log(collection);
-
   return (
     <Container fluid>
       <h3>Collection</h3>

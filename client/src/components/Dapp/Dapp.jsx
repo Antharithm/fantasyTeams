@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 // import { useState, useEffect } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { useSigner, useContract } from 'wagmi';
+import { AppContext } from '../../App';
 import { Balance } from './Balance';
 import { Collection } from './Collection';
 import { Minter } from './Minter';
@@ -141,22 +142,22 @@ const data = [
   },
 ];
 
-export function Dapp(props) {
-  const { account } = props;
+export function Dapp() {
+  const { network, account } = useContext(AppContext);
   const [refresh, setRefresh] = useState(false);
   const [playerData /*, setPlayerData*/] = useState(data); // undefined
   // useEffect(() => {setPlayerData(data)}, [playerData]);
 
   const { data: signerOrProvider, isError, isLoading } = useSigner();
 
-  const NonFungiblePlayers = require('./data/NonFungiblePlayers.json');
+  const NonFungiblePlayers = require(`./data/${network.chain.network}/NonFungiblePlayers.json`);
   const nft = useContract({
     signerOrProvider,
     abi: NonFungiblePlayers.abi,
     address: NonFungiblePlayers.address,
   });
 
-  const FantasyPoints = require('./data/FantasyPoints.json');
+  const FantasyPoints = require(`./data/${network.chain.network}/FantasyPoints.json`);
   const tkn = useContract({
     signerOrProvider,
     abi: FantasyPoints.abi,
@@ -190,7 +191,39 @@ export function Dapp(props) {
       <h1>Dapp</h1>
       <hr />
 
-      <Balance account={account} tkn={tkn} />
+      <Balance tkn={tkn} />
+
+      {network.chain.network === 'localhost' && (
+        <div>
+          <hr />
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              fetch('http://127.0.0.1:8545/', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  jsonrpc: '2.0',
+                  id: 0,
+                  method: 'hardhat_setBalance',
+                  params: [account.address, '0x1000000000000000000'],
+                }),
+              })
+                .then(async (res) => {
+                  const data = await res.json();
+                  console.log(data);
+                })
+                .catch((e) => console.error(e.toString()));
+            }}
+          >
+            Need Gas?
+          </Button>
+        </div>
+      )}
 
       <hr />
 

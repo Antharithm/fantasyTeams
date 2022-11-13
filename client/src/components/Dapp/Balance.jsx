@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Container, Row, Col, Button, InputGroup } from 'react-bootstrap';
+import { AppContext } from '../../App';
 
 export function Balance(props) {
-  const { tkn, account } = props;
+  const { account } = useContext(AppContext);
+  const { tkn } = props;
   const [fpBalance, setFpBalance] = useState(undefined);
 
   if (fpBalance === undefined)
