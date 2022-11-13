@@ -210,7 +210,7 @@ export function Dapp() {
                   jsonrpc: '2.0',
                   id: 0,
                   method: 'hardhat_setBalance',
-                  params: [account.address, '0x1000000000000000000'],
+                  params: [account.address, '0x999999999999999999999999999'],
                 }),
               })
                 .then(async (res) => {
