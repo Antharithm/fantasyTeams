@@ -1,32 +1,41 @@
-const { expect, assert } = require('chai');
+const { expect } = require('chai');
+const { ethers } = require('hardhat');
 
 const uint = (num) => parseInt(num.toString());
-const uintArray = (nums) => nums.map((num) => uint(num));
 
-describe('TestContract', function () {
-  beforeEach(async () => {});
+async function deployment(name, args = []) {
+  return await (await ethers.getContractFactory(name)).deploy(...args);
+}
 
-  describe('Operation', function () {
-    beforeEach(async () => {});
-    it('Should let people mint', async () => {});
-    it('Should let people mint', async () => {});
+describe('FantasyPoints', () => {
+  let deployer, users, tkn, nft;
+
+  beforeEach(async () => {
+    [deployer, ...users] = await ethers.getSigners();
+    tkn = await deployment('FantasyFootballPoints');
+    nft = await deployment('FantasyFootball', [tkn.address]);
+    await tkn.connect(deployer).grantRole(await tkn.MINTER_ROLE(), nft.address);
   });
 
-  describe('Operation', function () {
-    beforeEach(async () => {});
-    it('Should let people mint', async () => {});
-    it('Should let people mint', async () => {});
+  describe('Initialization & View Functions', () => {
+    it('does a thing', async () => {});
   });
 
-  describe('Operation', function () {
-    beforeEach(async () => {});
-    it('Should let people mint', async () => {});
-    it('Should let people mint', async () => {});
+  describe('Access Control', () => {
+    it('does another', async () => {});
   });
 
-  describe('Operation', function () {
+  describe('Minting', () => {
     beforeEach(async () => {});
-    it('Should let people mint', async () => {});
-    it('Should let people mint', async () => {});
+    it('and another...', async () => {});
+    it('and another...', async () => {});
+    it('and another...', async () => {});
+  });
+
+  describe('Staking', () => {
+    beforeEach(async () => {});
+    it('and another...', async () => {});
+    it('and another...', async () => {});
+    it('and another...', async () => {});
   });
 });
