@@ -130,4 +130,15 @@ contract FantasyFootball is IFantasyFootball, Ownable, ERC721 {
         super._burn(tokenId);
         delete tokenMetadata[tokenId];
     }
+
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal virtual {
+        require(
+            tokenStaked[tokenId] == false,
+            "FantasyFootball: Cannot Transfer Staked Tokens"
+        );
+    }
 }
