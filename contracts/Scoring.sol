@@ -1,57 +1,71 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
-
+pragma solidity ^0.8.15;
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 
-// this is an example truflation contract, it needs to be updated to use the
-// sports data api.
-
-contract TruflationTester is ChainlinkClient, ConfirmedOwner {
+contract Score is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
-
-    string public yoyInflation;
+    bytes public result;
+    mapping(bytes32 => bytes) public results;
     address public oracleId;
     string public jobId;
-    uint public fee;
+    uint256 public fee;
 
-    // Please refer to
-    // https://github.com/truflation/quickstart/blob/main/network.md
-    // for oracle address. job id, and fee for a given network
-
-    constructor(
-        address oracleId_,
-        string memory jobId_,
-        uint fee_
-    ) ConfirmedOwner(msg.sender) {
-        setPublicChainlinkToken();
-
-        // use this for Goerli (chain: 5)
-        // setChainlinkToken(0x326C977E6efc84E512bB9C30f76E30c160eD06FB);
-
+    constructor(address oracleId_, string memory jobId_,
+                uint256 fee_,
+		address token_) ConfirmedOwner(msg.sender) {
+	setChainlinkToken(token_);
         oracleId = oracleId_;
         jobId = jobId_;
         fee = fee_;
     }
 
-    function requestYoyInflation() public returns (bytes32 requestId) {
-        Chainlink.Request memory req = buildChainlinkRequest(
+    function doRequest(
+        string memory service_,
+        string memory data_,
+        string memory keypath_,
+        string memory abi_,
+        string memory multiplier_) public returns (bytes32 requestId) {
+          Chainlink.Request memory req = buildChainlinkRequest(
             bytes32(bytes(jobId)),
-            address(this),
-            this.fulfillYoyInflation.selector
-        );
-        req.add("service", "truflation/current");
-        req.add("keypath", "yearOverYearInflation");
-        req.add("abi", "json");
+            address(this), this.fulfillBytes.selector);
+        req.add("service", service_);
+        req.add("data", data_);
+        req.add("keypath", keypath_);
+        req.add("abi", abi_);
+        req.add("multiplier", multiplier_);
         return sendChainlinkRequestTo(oracleId, req, fee);
     }
 
-    function fulfillYoyInflation(bytes32 _requestId, bytes memory _inflation)
-        public
-        recordChainlinkFulfillment(_requestId)
-    {
-        yoyInflation = string(_inflation);
+    function doTransferAndRequest(
+        string memory service_,
+        string memory data_,
+        string memory keypath_,
+        string memory abi_,
+        string memory multiplier_,
+        uint256 fee_) public returns (bytes32 requestId) {
+        require(LinkTokenInterface(getToken()).transferFrom(
+               msg.sender, address(this), fee_), 'transfer failed');
+        Chainlink.Request memory req = buildChainlinkRequest(
+            bytes32(bytes(jobId)),
+            address(this), this.fulfillBytes.selector);
+        req.add("service", service_);
+        req.add("data", data_);
+        req.add("keypath", keypath_);
+        req.add("abi", abi_);
+        req.add("multiplier", multiplier_);
+        req.add("refundTo",
+                Strings.toHexString(uint160(msg.sender), 20));
+        return sendChainlinkRequestTo(oracleId, req, fee_);
     }
+
+    function fulfillBytes(bytes32 _requestId, bytes memory bytesData)
+        public recordChainlinkFulfillment(_requestId) {
+        result = bytesData;
+        results[_requestId] = bytesData;
+    }
+
 
     function changeOracle(address _oracle) public onlyOwner {
         oracleId = _oracle;
@@ -61,52 +75,34 @@ contract TruflationTester is ChainlinkClient, ConfirmedOwner {
         jobId = _jobId;
     }
 
-    function getChainlinkToken() public view returns (address) {
+    function changeFee(uint256 _fee) public onlyOwner {
+        fee = _fee;
+    }
+
+    function changeToken(address _address) public onlyOwner {
+        setChainlinkToken(_address);
+    }
+
+    function getToken() public view returns (address) {
         return chainlinkTokenAddress();
     }
 
     function withdrawLink() public onlyOwner {
         LinkTokenInterface link = LinkTokenInterface(chainlinkTokenAddress());
-        require(
-            link.transfer(msg.sender, link.balanceOf(address(this))),
-            "Unable to transfer"
-        );
+            require(link.transfer(msg.sender, link.balanceOf(address(this))), "Unable to transfer");
+  }
+    /** Use a function like this if you want to process the item
+        as int256 */
+
+    function getInt256(bytes32 _requestId) public view returns (int256) {
+       return toInt256(results[_requestId]);
     }
 
-    /*
-  // The following are for retrieving inflation in terms of wei
-  // This is useful in situations where you want to do numerical
-  // processing of values within the smart contract
+    function toInt256(bytes memory _bytes) internal pure
+      returns (int256 value) {
+          assembly {
+            value := mload(add(_bytes, 0x20))
+      }
+   }
 
-  // This will require a int256 rather than a uint as inflation
-  // can be negative
-
-  int256 public inflationWei;
-  function requestInflationWei() public returns (bytes32 requestId) {
-    Chainlink.Request memory req = buildChainlinkRequest(
-      bytes32(bytes(jobId)),
-      address(this),
-      this.fulfillInflationWei.selector
-    );
-    req.add("service", "truflation/current");
-    req.add("keypath", "yearOverYearInflation");
-    req.add("abi", "int256");
-    req.add("multiplier", "1000000000000000000");
-    return sendChainlinkRequestTo(oracleId, req, fee);
-  }
-
-  function fulfillInflationWei(
-    bytes32 _requestId,
-    bytes memory _inflation
-  ) public recordChainlinkFulfillment(_requestId) {
-    inflationWei = toInt256(_inflation);
-  }
-
-  function toInt256(bytes memory _bytes) internal pure
-  returns (int256 value) {
-    assembly {
-      value := mload(add(_bytes, 0x20))
-    }
-  }
-*/
 }
