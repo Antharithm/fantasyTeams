@@ -28,17 +28,6 @@ export function NavigationBar(props) {
               >
                 Dapp
               </Nav.Link>
-              <NavDropdown title="Info" id="basic-nav-dropdown">
-                <NavDropdown.Item
-                  href=""
-                  onClick={(event) => {
-                    event.preventDefault();
-                    page.set('About');
-                  }}
-                >
-                  About
-                </NavDropdown.Item>
-              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
           <ConnectButton />
