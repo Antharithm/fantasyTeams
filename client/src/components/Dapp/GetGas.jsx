@@ -55,8 +55,8 @@ export default function GetGas() {
   return (
     <div>
       <hr />
-      <Button onClick={sendFunds}>
-        Faucet ({accounts.length - used} Remaining)
+      <Button onClick={sendFunds} disabled={used !== 0}>
+        Faucet
       </Button>
     </div>
   );
