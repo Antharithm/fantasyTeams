@@ -1,7 +1,6 @@
 import { ethers } from 'ethers';
 import { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
-import { useBalance } from 'wagmi';
 import { AppContext } from '../../App';
 
 const accounts = [

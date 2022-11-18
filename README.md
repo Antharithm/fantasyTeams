@@ -6,10 +6,10 @@ web3 fantasyFootball
 Setting Up
 1. Clone/Download the Repository
 2. Install Dependencies:
-$ npm install
+$ npm run setup
 
 3. Run tests
-$ npx hardhat test
+$ npm run test
 
 4. Start Hardhat node
 $ npx hardhat node
@@ -18,7 +18,5 @@ $ npx hardhat node
 In a separate terminal execute: $ npx hardhat run ./scripts/deploy.js --network localhost
 
 7. Start frontend
-CD into client folder
-Run npm install
-$ npm run start
+$ npm run client
 ```

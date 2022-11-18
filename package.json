@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "setup": "npm i && cd client && npm i",
-    "reset": "",
     "test": "npx hardhat test",
     "client": "cd client && yarn start",
     "deploy": "npx hardhat run ./scripts/deploy.js",
