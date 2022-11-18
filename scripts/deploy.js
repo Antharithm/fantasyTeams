@@ -29,8 +29,6 @@ async function deployAndVerify(name, constructorArguments = []) {
 
   const signer = (await hre.ethers.getSigners())[0];
   const { abi, bytecode } = hre.artifacts.readArtifactSync(name);
-  console.log(signer);
-
   const contract = await new ethers.ContractFactory(
     abi,
     bytecode,
