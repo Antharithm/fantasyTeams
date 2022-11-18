@@ -18,5 +18,7 @@ $ npx hardhat node
 In a separate terminal execute: $ npx hardhat run ./scripts/deploy.js --network localhost
 
 7. Start frontend
+CD into client folder
+Run npm install
 $ npm run start
 ```
