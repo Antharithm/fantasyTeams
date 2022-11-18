@@ -4,9 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "npm i && cd client && npm i",
+    "reset": "",
     "test": "npx hardhat test",
-    "sim": "npx hardhat node",
-    "deploy": "npx hardhat run ./scripts/deploy.js"
+    "client": "cd client && yarn start",
+    "deploy": "npx hardhat run ./scripts/deploy.js",
+    "deploy:dev": "npx hardhat run ./scripts/deploy.js",
+    "dev": "npx concurrently-await --names deployment,client \"npx hardhat node await --includes Started\" \"npm run deploy:dev await --includes complete\" \"npm run client\""
   },
   "repository": {
     "type": "git",
@@ -22,12 +26,13 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.0",
     "@nomiclabs/hardhat-etherscan": "^3.1.1",
+    "concurrently-await": "^1.2.0",
     "hardhat": "^2.12.0"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.5.1",
     "@openzeppelin/contracts": "^4.7.3",
     "dotenv": "^16.0.3",
-    "react-slick": "^0.29.0"
+    "ethers": "^5.7.2"
   }
 }

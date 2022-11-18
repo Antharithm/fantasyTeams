@@ -9,7 +9,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import App from './App';
 
 const { chains, provider } = configureChains(
-  [chain.goerli, chain.localhost],
+  [chain.goerli, chain.hardhat],
   [publicProvider()]
 );
 

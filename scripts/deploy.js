@@ -1,5 +1,6 @@
 const hre = require('hardhat');
 const fs = require('fs');
+const { ethers } = require('ethers');
 
 async function verify(tx, options) {
   await tx.wait();
@@ -21,30 +22,33 @@ async function verify(tx, options) {
   }
 }
 
-async function deployAndVerify(name, args = []) {
-  const cache = './client/src/components/Dapp/data/' + hre.network.name;
+async function deployAndVerify(name, constructorArguments = []) {
+  const base = './client/src/components/Dapp/data/';
+  const cache = base + hre.network.name;
   if (!fs.existsSync(cache)) fs.mkdirSync(cache);
 
-  const contract = await (
-    await hre.ethers.getContractFactory(name)
-  ).deploy(...args);
+  const signer = (await hre.ethers.getSigners())[0];
+  const { abi, bytecode } = hre.artifacts.readArtifactSync(name);
+  console.log(signer);
+
+  const contract = await new ethers.ContractFactory(
+    abi,
+    bytecode,
+    signer
+  ).deploy(...constructorArguments);
   await contract.deployTransaction.wait();
-  fs.writeFileSync(
-    `${cache}/${name}.json`,
-    JSON.stringify(
-      {
-        abi: hre.artifacts.readArtifactSync(name).abi,
-        address: contract.address,
-      },
-      null,
-      2
-    )
-  );
+
+  const data = {
+    abi,
+    bytecode,
+    address: contract.address,
+  };
+  fs.writeFileSync(`${cache}/${name}.json`, JSON.stringify(data, null, 2));
 
   if (!['hardhat', 'localhost'].includes(hre.network.name))
     await verify(contract.deployTransaction, {
       address: contract.address,
-      constructorArguments: args,
+      constructorArguments,
     });
 
   console.log('DEPLOYED:', name, contract.address);
@@ -57,7 +61,7 @@ async function main() {
   const tkn = await deployAndVerify('FantasyPoints');
   await deployAndVerify('fantasy', [nft.address, tkn.address]);
   // await deployAndVerify('TruflationTester', [oracleId_, jobId_, fee_]);
-  console.log();
+  console.log('Deployment operations complete');
 }
 
 main().catch((error) => {
