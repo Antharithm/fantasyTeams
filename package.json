@@ -8,7 +8,7 @@
     "test": "npx hardhat test",
     "client": "cd client && yarn start",
     "deploy": "npx hardhat run ./scripts/deploy.js",
-    "deploy:dev": "npx hardhat run ./scripts/deploy.js",
+    "deploy:dev": "npx hardhat run ./scripts/deploy.js --network localhost",
     "dev": "npx concurrently-await --names deployment,client \"npx hardhat node await --includes Started\" \"npm run deploy:dev await --includes complete\" \"npm run client\""
   },
   "repository": {

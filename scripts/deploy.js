@@ -24,7 +24,10 @@ async function verify(tx, options) {
 
 async function deployAndVerify(name, constructorArguments = []) {
   const base = './client/src/components/Dapp/data/';
-  const cache = base + hre.network.name;
+  const cache =
+    hre.network.name === 'localhost'
+      ? base + 'hardhat'
+      : base + hre.network.name;
   if (!fs.existsSync(cache)) fs.mkdirSync(cache);
 
   const signer = (await hre.ethers.getSigners())[0];

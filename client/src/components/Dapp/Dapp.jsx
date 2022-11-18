@@ -58,7 +58,7 @@ export function Dapp() {
     <Container>
       <h1>Dapp</h1>
 
-      {network.chain.network === 'hardhat' && <GetGas />}
+      {['hardhat', 'localhost'].includes(network.chain.network) && <GetGas />}
 
       <hr />
       <Balance tkn={tkn} />
