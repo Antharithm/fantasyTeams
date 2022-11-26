@@ -1,8 +1,8 @@
 # fantasyTeams
 
-![image](https://user-images.githubusercontent.com/83500098/204089812-ba260d01-1913-4feb-bdc1-e1577b40a07a.png)
-
 web3 fantasyFootball
+
+![image](https://user-images.githubusercontent.com/83500098/204089812-ba260d01-1913-4feb-bdc1-e1577b40a07a.png)
 
 ```shell
 Setting Up
